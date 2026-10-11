@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MIT Campus Exchange Hub</title>
+<meta name="description" content="Campus-only buy and sell marketplace prototype for MIT ADT University students.">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<!-- ============================================================
+     LOGIN / REGISTRATION SCREEN
+     Shown until a demo account "logs in".
+     ============================================================ -->
+<div id="authScreen" class="auth-screen">
+
+  <!-- Left brand panel -->
+  <section class="auth-brand">
+    <div class="brand-mark" aria-hidden="true">
+      <svg viewBox="0 0 64 64" width="56" height="56" role="img">
+        <rect x="4" y="4" width="56" height="56" rx="14" fill="none" stroke="currentColor" stroke-width="3"/>
+        <path d="M16 44V22l16 12 16-12v22" fill="none" stroke="currentColor" stroke-width="4"
+              stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </div>
+    <h1 class="brand-title">MIT Campus<br>Exchange Hub</h1>
+    <p class="brand-tag">Buy and sell textbooks, notes, stationery and electronics inside the campus.</p>
+    <ul class="brand-points">
+      <li><span aria-hidden="true">📚</span> Textbooks &amp; notes from your own batch</li>
+      <li><span aria-hidden="true">💬</span> Chat with the seller before you buy</li>
+      <li><span aria-hidden="true">🛡️</span> Report a listing or a user if something looks wrong</li>
+    </ul>
+    <p class="brand-note">Student PBL prototype · Second Year Engineering · Frontend only</p>
+  </section>
+
+  <!-- Right forms panel -->
+  <section class="auth-forms">
+    <div class="auth-card">
+
+      <!-- Demo credentials box (clearly visible on the login screen) -->
+      <div class="demo-box">
+        <h2 class="demo-box-title">Demo accounts for the jury</h2>
+        <div class="demo-row">
+          <span class="demo-label">Student</span>
+          <code>student@demo.edu</code>
+          <button type="button" class="btn btn-ghost btn-xs" id="fillStudentBtn">Fill</button>
+        </div>
+        <div class="demo-row">
+          <span class="demo-label">Admin</span>
+          <code>admin@demo.edu</code>
+          <button type="button" class="btn btn-ghost btn-xs" id="fillAdminBtn">Fill</button>
+        </div>
+        <div class="demo-row">
+          <span class="demo-label">Password</span>
+          <code>demo123</code>
+        </div>
+        <p class="demo-warn">Fictional credentials created only for this prototype. No real MIT ADT account is verified.</p>
+      </div>
+
+      <!-- LOGIN FORM -->
+      <form id="loginForm" class="auth-form" novalidate>
+        <h2 class="auth-heading">Login</h2>
+        <label class="field">
+          <span class="field-label">Student email</span>
+          <input type="email" id="loginEmail" placeholder="student@demo.edu" autocomplete="username">
+        </label>
+        <label class="field">
+          <span class="field-label">Password</span>
+          <input type="password" id="loginPassword" placeholder="demo123" autocomplete="current-password">
+        </label>
+        <p class="form-error hidden" id="loginError"></p>
+        <button type="submit" class="btn btn-primary btn-block">Login</button>
+        <p class="auth-switch">
+          New here?
+          <a href="#" id="showRegisterLink">Create Account</a>
+        </p>
+      </form>
+
+      <!-- REGISTRATION FORM -->
+      <form id="registerForm" class="auth-form hidden" novalidate>
+        <h2 class="auth-heading">Create Account</h2>
+        <label class="field">
+          <span class="field-label">Student name</span>
+          <input type="text" id="regName" placeholder="e.g. Aarav Sharma">
+        </label>
+        <label class="field">
+          <span class="field-label">Student email</span>
+          <input type="email" id="regEmail" placeholder="yourname@demo.edu">
+        </label>
+        <label class="field">
+          <span class="field-label">Password</span>
+          <input type="password" id="regPassword" placeholder="At least 6 characters">
+        </label>
+        <label class="field">
+          <span class="field-label">Department</span>
+          <select id="regDepartment">
+            <option value="">Select department</option>
+            <option>Computer Engineering</option>
+            <option>Information Technology</option>
+            <option>Electronics &amp; Telecom</option>
+            <option>Mechanical Engineering</option>
+            <option>Civil Engineering</option>
+            <option>Design</option>
+          </select>
+        </label>
+        <label class="field">
+          <span class="field-label">Year of study</span>
+          <select id="regYear">
+            <option value="">Select year</option>
+            <option>1st Year</option>
+            <option>2nd Year</option>
+            <option>3rd Year</option>
+            <option>4th Year</option>
+          </select>
+        </label>
+        <p class="form-error hidden" id="registerError"></p>
+        <button type="submit" class="btn btn-primary btn-block">Create Account</button>
+        <p class="auth-switch">
+          Already registered?
+          <a href="#" id="showLoginLink">Back to Login</a>
+        </p>
+      </form>
+
+    </div>
+  </section>
+</div>
+
+<!-- ============================================================
+     STUDENT APP SHELL
+     ============================================================ -->
+<div id="appShell" class="app-shell hidden">
+
+  <header class="topbar">
+    <a href="#" class="topbar-brand" data-view="home">
+      <span class="brand-mark small" aria-hidden="true">
+        <svg viewBox="0 0 64 64" width="30" height="30" role="img">
+          <rect x="4" y="4" width="56" height="56" rx="14" fill="none" stroke="currentColor" stroke-width="3"/>
+          <path d="M16 44V22l16 12 16-12v22" fill="none" stroke="currentColor" stroke-width="4"
+                stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </span>
+      <span class="topbar-title">Campus Exchange Hub</span>
+    </a>
+
+    <div class="topbar-right">
+      <button type="button" class="icon-btn" id="topbarSellBtn" title="Sell an item">
+        <span aria-hidden="true">＋</span><span class="icon-btn-text">Sell Item</span>
+      </button>
+      <button type="button" class="icon-btn" id="topbarBellBtn" data-view="notifications" title="Notifications">
+        <span aria-hidden="true">🔔</span>
+        <span class="badge hidden" id="navBadgeTop">0</span>
+      </button>
+      <button type="button" class="user-chip" id="userChipBtn" title="Profile">
+        <span class="avatar" id="userChipAvatar">A</span>
+        <span class="user-chip-name" id="userChipName">Student</span>
+      </button>
+      <button type="button" class="icon-btn" id="menuBtn" title="Menu">
+        <span aria-hidden="true">☰</span>
+      </button>
+    </div>
+  </header>
+
+  <!-- Dropdown menu -->
+  <div class="dropdown hidden" id="userMenu">
+    <button type="button" class="dropdown-item" data-view="profile">👤 My Profile</button>
+    <button type="button" class="dropdown-item" data-view="listings">🏷️ My Listings</button>
+    <button type="button" class="dropdown-item" data-view="requests">📦 Purchase Requests</button>
+    <button type="button" class="dropdown-item" data-view="wishlist">❤️ Wishlist</button>
+    <button type="button" class="dropdown-item" data-view="tech">🧩 Technical Details</button>
+    <button type="button" class="dropdown-item danger" id="menuLogoutBtn">⎋ Logout</button>
+  </div>
+
+  <!-- Main navigation -->
+  <nav class="main-nav" id="mainNav">
+    <button type="button" class="nav-item" data-view="home">🏠 <span>Home</span></button>
+    <button type="button" class="nav-item" data-view="browse">🔍 <span>Browse Items</span></button>
+    <button type="button" class="nav-item" data-view="sell">➕ <span>Sell Item</span></button>
+    <button type="button" class="nav-item" data-view="listings">🏷️ <span>My Listings</span></button>
+    <button type="button" class="nav-item" data-view="chats">💬 <span>My Chats</span></button>
+    <button type="button" class="nav-item" data-view="requests">📦 <span>Purchase Requests</span></button>
+    <button type="button" class="nav-item" data-view="wishlist">❤️ <span>Wishlist</span></button>
+    <button type="button" class="nav-item" data-view="profile">👤 <span>Profile</span></button>
+    <button type="button" class="nav-item" data-view="notifications">
+      🔔 <span>Notifications</span>
+      <span class="badge hidden" id="navBadge">0</span>
+    </button>
+  </nav>
+
+  <!-- ===== MAIN CONTENT: one section per page ===== -->
+  <main class="main-content" id="mainContent">
+
+    <section class="view" id="view-home"></section>
+    <section class="view" id="view-browse"></section>
+    <section class="view" id="view-details"></section>
+    <section class="view" id="view-sell"></section>
+    <section class="view" id="view-listings"></section>
+    <section class="view" id="view-chats"></section>
+    <section class="view" id="view-requests"></section>
+    <section class="view" id="view-wishlist"></section>
+    <section class="view" id="view-profile"></section>
+    <section class="view" id="view-notifications"></section>
+    <section class="view" id="view-report"></section>
+    <section class="view" id="view-tech"></section>
+
+  </main>
+
+  <footer class="site-footer">
+    <div>
+      <strong>MIT Campus Exchange Hub</strong> — student PBL prototype.
+      No backend, no database, no external APIs.
+    </div>
+    <div class="footer-links">
+      <button type="button" class="link-btn" data-view="tech">Technical Details</button>
+      <button type="button" class="link-btn" id="resetDemoBtn">Reset Demo Data</button>
+    </div>
+  </footer>
+</div>
+
+<!-- ============================================================
+     ADMIN DASHBOARD SHELL
+     ============================================================ -->
+<div id="adminShell" class="admin-shell hidden">
+
+  <aside class="admin-sidebar">
+    <div class="admin-logo">
+      <span class="brand-mark small" aria-hidden="true">
+        <svg viewBox="0 0 64 64" width="26" height="26" role="img">
+          <rect x="4" y="4" width="56" height="56" rx="14" fill="none" stroke="currentColor" stroke-width="3"/>
+          <path d="M16 44V22l16 12 16-12v22" fill="none" stroke="currentColor" stroke-width="4"
+                stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </span>
+      <span>Admin Panel</span>
+    </div>
+    <nav class="admin-nav" id="adminNav">
+      <button type="button" class="admin-nav-item" data-admin="overview">📊 Overview</button>
+      <button type="button" class="admin-nav-item" data-admin="users">👥 User Management</button>
+      <button type="button" class="admin-nav-item" data-admin="listings">🏷️ Listing Management</button>
+      <button type="button" class="admin-nav-item" data-admin="reports">🚩 Report Management</button>
+      <button type="button" class="admin-nav-item" data-admin="activity">🕒 Activity Overview</button>
+    </nav>
+    <div class="admin-sidebar-foot">
+      <button type="button" class="admin-nav-item" data-view="home">🏠 Student Marketplace</button>
+      <button type="button" class="admin-nav-item" data-view="tech">🧩 Technical Details</button>
+      <button type="button" class="admin-nav-item danger" id="adminLogoutBtn">⎋ Logout</button>
+    </div>
+  </aside>
+
+  <div class="admin-main">
+    <header class="admin-topbar">
+      <div>
+        <h1 class="admin-title">Admin Dashboard</h1>
+        <p class="admin-sub">Frontend demonstration dashboard — it does not monitor real users or transactions.</p>
+      </div>
+      <div class="admin-topbar-right">
+        <span class="avatar admin-avatar">A</span>
+        <span id="adminNameLabel">Campus Admin</span>
+      </div>
+    </header>
+
+    <section class="admin-view" id="admin-overview"></section>
+    <section class="admin-view" id="admin-users"></section>
+    <section class="admin-view" id="admin-listings"></section>
+    <section class="admin-view" id="admin-reports"></section>
+    <section class="admin-view" id="admin-activity"></section>
+  </div>
+</div>
+
+<!-- ============================================================
+     SHARED UI: toast messages and confirmation modal
+     ============================================================ -->
+<div id="toastContainer" class="toast-container" aria-live="polite"></div>
+
+<div id="modalRoot" class="modal-root hidden" role="dialog" aria-modal="true">
+  <div class="modal-card">
+    <h3 class="modal-title" id="modalTitle">Confirm</h3>
+    <p class="modal-text" id="modalText"></p>
+    <div class="modal-actions">
+      <button type="button" class="btn btn-ghost" id="modalCancelBtn">Cancel</button>
+      <button type="button" class="btn btn-danger" id="modalConfirmBtn">Confirm</button>
+    </div>
+  </div>
+</div>
+
+<!-- data.js MUST be loaded before script.js -->
+<script src="data.js"></script>
+<script src="script.js"></script>
+<script type="module" src="https://static.cloudflareinsights.com/beacon.min.js/v4bc70e2c01a94c73b74392e4234840661791215815920" integrity="sha512-L0ha0OXavK/8okipN9F8BtP84dg9DUhPERbBXzwI6dgTA55d2+yweo3pn5CSFYs45/r8md2+xvUPtTdvTNRfjA==" data-cf-beacon='{"version":"2024.11.0","token":"4edd5f8ec12a48cfa682ab8261b80a79","spa":2}' crossorigin="anonymous"></script>
+</body>
+</html>
